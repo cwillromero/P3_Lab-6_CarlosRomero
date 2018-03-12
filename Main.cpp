@@ -158,6 +158,7 @@ int menu()
     return 0;
 }
 
+//Termina la ejecucion
 void salir()
 {
     int x, y;
@@ -187,6 +188,7 @@ void salir()
     exit(0);
 }
 
+//Crea al jugador inicial
 void registro()
 {
     erase();
@@ -303,6 +305,7 @@ int tipoBomba()
     echo();
 }
 
+//Una pequeña animación
 void Cargando()
 {
     int x, y;
@@ -327,12 +330,14 @@ void Cargando()
     attroff(COLOR_PAIR(1));
 }
 
+//Crea Escenario Invisible
 void EscenarioInvisible()
 {
     string nombre = "Invisible";
     escenario = new Invisible(nombre, tipobomba);
 }
 
+//Modalidad General, movimientos, validaciones, bombas, etc
 void Juego()
 {
     //Crear Jugadores bot
@@ -358,16 +363,19 @@ void Juego()
     attron(COLOR_PAIR(2));
     refresh();
     curs_set(0);
+    bool ganar = false;
     while (true)
     {
         move(21, 8);
         printw("%i", vida);
         if (vida == 0)
         {
+            ganar = false;
             break;
         }
         noecho();
         int cont = 0;
+        int cont2 = 0;
         if ((cx >= 0 && cy >= 0) && (cx <= 10 && cy <= 12))
         {
             for (int i = 0; i < 11; i++)
@@ -457,6 +465,7 @@ void Juego()
                         Espina *bomba;
                         bomba = dynamic_cast<Espina *>(escenario->getMatrix()[i][j]);
                         bomba->setContador(bomba->getContador() - 1);
+                        bomba->setCantidad(bomba->getCantidad() + 1);
                         refresh();
                         int alcance = 100;
                         if (bomba->getContador() == 0)
@@ -633,12 +642,22 @@ void Juego()
                     {
                         cont = cont + 1;
                     }
+
+                    if (escenario->getMatrix()[i][j]->toString() == ":")
+                    {
+                        cont2 = cont2 + 1;
+                    }
                 }
             }
             if (cont == 0)
             {
                 vida = vida - 1;
                 escenario->getMatrix()[cx][cy] = jugador;
+            }
+            if (cont2 == 0)
+            {
+                ganar = true;
+                break;
             }
             refresh();
             tecla = getch();
@@ -736,13 +755,21 @@ void Juego()
     }
     attroff(COLOR_PAIR(2));
     move(y / 2, (x / 2 - 4));
-    printw("Perdió!!");
+    if (ganar == false)
+    {
+        printw("Perdió!!");
+    }
+    else
+    {
+        printw("Ganóóó!!");
+    }
     refresh();
     usleep(1000000 / 2);
     curs_set(1);
     salir();
 }
 
+//En general
 void EscenarioDeJuego()
 {
     start_color();
@@ -823,6 +850,7 @@ void EscenarioDeJuego()
     }
 }
 
+//Los tres tipos de bombas
 void crearBomba()
 {
 
