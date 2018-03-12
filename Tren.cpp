@@ -6,10 +6,8 @@ using namespace std;
 
 Tren::Tren(string nombre) : Escenario(nombre)
 {
-    
 }
 
 Tren::~Tren()
 {
-    cout<<"tren destruido";
 }

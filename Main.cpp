@@ -14,6 +14,7 @@ using namespace std;
 #include "Tren.h"
 #include <typeinfo>
 #include <stdlib.h>
+
 Escenario *escenario = NULL;
 void salir();
 int menu();
@@ -29,6 +30,7 @@ void Juego();
 void crearBomba();
 int vida = 4;
 void moverJugadores();
+void bombasEnemigas();
 
 int main(void)
 {
@@ -378,6 +380,7 @@ void Juego()
         noecho();
         int cont = 0;
         int cont2 = 0;
+        bombasEnemigas();
         if ((cx >= 0 && cy >= 0) && (cx <= 10 && cy <= 12))
         {
             for (int i = 0; i < 11; i++)
@@ -387,6 +390,7 @@ void Juego()
                     char it = escenario->getMatrix()[i][j]->toString().at(0);
                     move(i + 1, j + 1);
                     printw("%c", it);
+                    refresh();
                     if (escenario->getMatrix()[i][j]->toString() == "Q")
                     {
                         Normal *bomba;
@@ -727,7 +731,7 @@ void Juego()
         printw("Ganóóó!!");
     }
     refresh();
-    usleep(1000000 / 2);
+    usleep(1000000);
     curs_set(1);
     salir();
 }
@@ -925,7 +929,7 @@ void moverJugadores()
                     }
                     //break;
                 }
-                if (num == 2 && cy + 1 <= 12)
+                if (num == 4 && cy + 1 <= 12)
                 {
                     if (escenario->getMatrix()[cx][cy + 1]->toString() == " ")
                     {
@@ -937,7 +941,7 @@ void moverJugadores()
                     }
                     //break;
                 }
-                if (num == 3 && cy - 1 >= 0)
+                if (num == 2 && cy - 1 >= 0)
                 {
                     if (escenario->getMatrix()[cx][cy - 1]->toString() == " ")
                     {
@@ -949,7 +953,7 @@ void moverJugadores()
                     }
                     //break;
                 }
-                if (num == 4 && cx + 1 <= 10)
+                if (num == 3 && cx + 1 <= 10)
                 {
                     if (escenario->getMatrix()[cx + 1][cy]->toString() == " ")
                     {
@@ -964,4 +968,27 @@ void moverJugadores()
             }
         }
     }
+}
+
+void bombasEnemigas()
+{
+    int i = (rand() % 10);
+    int j = (rand() % 12);
+
+    if ((i <= 10 && i >= 0) && (j <= 112 && j >= 0) && escenario->getMatrix()[i][j]->toString() == " ")
+    {
+        if (tipobomba == 1)
+        {
+            escenario->setMatrix(new Normal(1, i, j, 4), i, j);
+        }
+        if (tipobomba == 2)
+        {
+            escenario->setMatrix(new Espina(1, i, j, 4, 0), i, j);
+        }
+        if (tipobomba == 3)
+        {
+            escenario->setMatrix(new V(1, i, j, 4), i, j);
+        }
+    }
+    refresh();
 }
