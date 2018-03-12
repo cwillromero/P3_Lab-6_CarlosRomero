@@ -380,7 +380,7 @@ void Juego()
         noecho();
         int cont = 0;
         int cont2 = 0;
-        //bombasEnemigas();
+        bombasEnemigas();
         if ((cx >= 0 && cy >= 0) && (cx <= 10 && cy <= 12))
         {
             for (int i = 0; i < 11; i++)
