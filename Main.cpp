@@ -390,12 +390,16 @@ void Juego()
                                 {
                                     if (escenario->getMatrix()[i - k][j]->toString() != "O")
                                         escenario->setMatrix(new Item(0, i - k, j), i - k, j);
+                                    else
+                                        k = 100;
                                 }
                             if (i + alcance <= 10)
                                 for (int k = 1; k <= alcance; k++)
                                 {
                                     if (escenario->getMatrix()[i + k][j]->toString() != "O")
                                         escenario->setMatrix(new Item(0, i + k, j), i + k, j);
+                                    else
+                                        k = 100;
                                 }
 
                             if (j - alcance >= 0)
@@ -403,6 +407,8 @@ void Juego()
                                 {
                                     if (escenario->getMatrix()[i][j - k]->toString() != "O")
                                         escenario->setMatrix(new Item(0, i, j - k), i, j - k);
+                                    else
+                                        k = 100;
                                 }
 
                             if (j + alcance <= 12)
@@ -410,6 +416,8 @@ void Juego()
                                 {
                                     if (escenario->getMatrix()[i][j + k]->toString() != "O")
                                         escenario->setMatrix(new Item(0, i, j + k), i, j + k);
+                                    else
+                                        k = 100;
                                 }
                             escenario->setMatrix(new Item(0, i, j), i, j);
                         }
@@ -435,24 +443,28 @@ void Juego()
                 direccion = 1;
             }
             //IZQUIERDA
-            if (tecla == 97)
+            else if (tecla == 97)
             {
                 direccion = 2;
             }
             //DERECHA
-            if (tecla == 100)
+            else if (tecla == 100)
             {
                 direccion = 3;
             }
             //ABAJO
-            if (tecla == 115)
+            else if (tecla == 115)
             {
                 direccion = 4;
             }
             //Crear Bomba
-            if (tecla == 109)
+            else if (tecla == 109)
             {
                 direccion = 5;
+            }
+            else
+            {
+                direccion = 0;
             }
             echo();
             if (direccion == 1)
@@ -587,7 +599,7 @@ void EscenarioDeJuego()
     else
         printw("Tren");
     move(20, 11);
-    printw("w,a,s,d,x");
+    printw("w,a,s,d,m");
     move(21, 0);
     printw("Vidas: ");
     if (escenario->getNombre() == "Invisible")
@@ -599,7 +611,7 @@ void EscenarioDeJuego()
     }
     else
     {
-        vida=0;
+        vida = 0;
         move(21, 8);
         printw("%i", vida);
     }
