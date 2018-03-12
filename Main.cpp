@@ -375,6 +375,8 @@ void Juego()
                 for (int j = 0; j < 13; j++)
                 {
                     char it = escenario->getMatrix()[i][j]->toString().at(0);
+                    move(i + 1, j + 1);
+                    printw("%c", it);
                     if (escenario->getMatrix()[i][j]->toString() == "Q")
                     {
                         Normal *bomba;
@@ -385,45 +387,184 @@ void Juego()
                         refresh();
                         if (bomba->getContador() == 0)
                         {
-                            if (i - alcance >= 0)
-                                for (int k = 1; k <= alcance; k++)
+
+                            for (int k = 1; k <= alcance; k++)
+                            {
+                                if (i - k >= 0)
                                 {
                                     if (escenario->getMatrix()[i - k][j]->toString() != "O")
                                         escenario->setMatrix(new Item(0, i - k, j), i - k, j);
                                     else
                                         k = 100;
                                 }
-                            if (i + alcance <= 10)
-                                for (int k = 1; k <= alcance; k++)
+                                else
                                 {
+                                    k = 100;
+                                }
+                            }
+
+                            for (int k = 1; k <= alcance; k++)
+                            {
+                                if (i + k <= 10)
+                                {
+
                                     if (escenario->getMatrix()[i + k][j]->toString() != "O")
                                         escenario->setMatrix(new Item(0, i + k, j), i + k, j);
                                     else
                                         k = 100;
                                 }
+                                else
+                                {
+                                    k = 100;
+                                }
+                            }
 
-                            if (j - alcance >= 0)
-                                for (int k = 1; k <= alcance; k++)
+                            for (int k = 1; k <= alcance; k++)
+                            {
+                                if (j - k >= 0)
                                 {
                                     if (escenario->getMatrix()[i][j - k]->toString() != "O")
                                         escenario->setMatrix(new Item(0, i, j - k), i, j - k);
                                     else
                                         k = 100;
                                 }
+                                else
+                                {
+                                    k = 100;
+                                }
+                            }
 
-                            if (j + alcance <= 12)
-                                for (int k = 1; k <= alcance; k++)
+                            for (int k = 1; k <= alcance; k++)
+                            {
+                                if (j + k <= 12)
                                 {
                                     if (escenario->getMatrix()[i][j + k]->toString() != "O")
                                         escenario->setMatrix(new Item(0, i, j + k), i, j + k);
                                     else
                                         k = 100;
                                 }
+                                else
+                                {
+                                    k = 100;
+                                }
+                            }
                             escenario->setMatrix(new Item(0, i, j), i, j);
                         }
                     }
-                    move(i + 1, j + 1);
-                    printw("%c", it);
+
+                    if (escenario->getMatrix()[i][j]->toString() == "x")
+                    {
+                        Espina *bomba;
+                        bomba = dynamic_cast<Espina *>(escenario->getMatrix()[i][j]);
+                        bomba->setContador(bomba->getContador() - 1);
+                        refresh();
+                        int alcance = 100;
+                        if (bomba->getContador() == 0)
+                        {
+                            for (int k = 1; k <= alcance; k++)
+                            {
+                                if (i - k >= 0)
+                                {
+                                    if (escenario->getMatrix()[i - k][j]->toString() != "O")
+                                        escenario->setMatrix(new Item(0, i - k, j), i - k, j);
+                                    else
+                                        k = 100;
+                                }
+                                else
+                                {
+                                    k = 100;
+                                }
+                            }
+
+                            for (int k = 1; k <= alcance; k++)
+                            {
+                                if (i + k <= 10)
+                                {
+
+                                    if (escenario->getMatrix()[i + k][j]->toString() != "O")
+                                        escenario->setMatrix(new Item(0, i + k, j), i + k, j);
+                                    else
+                                        k = 100;
+                                }
+                                else
+                                {
+                                    k = 100;
+                                }
+                            }
+
+                            for (int k = 1; k <= alcance; k++)
+                            {
+                                if (j - k >= 0)
+                                {
+                                    if (escenario->getMatrix()[i][j - k]->toString() != "O")
+                                        escenario->setMatrix(new Item(0, i, j - k), i, j - k);
+                                    else
+                                        k = 100;
+                                }
+                                else
+                                {
+                                    k = 100;
+                                }
+                            }
+
+                            for (int k = 1; k <= alcance; k++)
+                            {
+                                if (j + k <= 12)
+                                {
+                                    if (escenario->getMatrix()[i][j + k]->toString() != "O")
+                                        escenario->setMatrix(new Item(0, i, j + k), i, j + k);
+                                    else
+                                        k = 100;
+                                }
+                                else
+                                {
+                                    k = 100;
+                                }
+                            }
+                            escenario->setMatrix(new Item(0, i, j), i, j);
+                        }
+                    }
+
+                    /* if (escenario->getMatrix()[i][j]->toString() == ":")
+                    {
+                        if (i + 1 <= 10)
+                        {
+                            if (escenario->getMatrix()[i + 1][j]->toString() == " ")
+                            {
+                                Item *temp = escenario->getMatrix()[i][j];
+                                escenario->setMatrix(temp, i + 1, j);
+                                escenario->setMatrix(new Item(0, i, j), i, j);
+                            }
+                        }
+                        else if (i - 1 >= 0)
+                        {
+                            if (escenario->getMatrix()[i - 1][j]->toString() == " ")
+                            {
+                                Item *temp = escenario->getMatrix()[i][j];
+                                escenario->setMatrix(temp, i - 1, j);
+                                escenario->setMatrix(new Item(0, i, j), i, j);
+                            }
+                        }
+                        else if (j + 1 <= 12)
+                        {
+                            if (escenario->getMatrix()[i][j + 1]->toString() == " ")
+                            {
+                                Item *temp = escenario->getMatrix()[i][j];
+                                escenario->setMatrix(temp, i, j + 1);
+                                escenario->setMatrix(new Item(0, i, j), i, j);
+                            }
+                        }
+                        else if (j - 1 >= 0)
+                        {
+                            if (escenario->getMatrix()[i][j - 1]->toString() == " ")
+                            {
+                                Item *temp = escenario->getMatrix()[i][j];
+                                escenario->setMatrix(temp, i, j - 1);
+                                escenario->setMatrix(new Item(0, i, j), i, j);
+                            }
+                        }
+                    }*/
+
                     if (escenario->getMatrix()[i][j]->toString() == "8")
                     {
                         cont = cont + 1;
@@ -466,7 +607,7 @@ void Juego()
             {
                 direccion = 0;
             }
-            echo();
+
             if (direccion == 1)
             {
                 if (cx - 1 >= 0)
@@ -535,6 +676,7 @@ void Juego()
     refresh();
     usleep(1000000 / 2);
     curs_set(1);
+    salir();
 }
 
 void EscenarioDeJuego()
