@@ -28,6 +28,8 @@ int tipobomba;
 void Juego();
 void crearBomba();
 int vida = 4;
+void moverJugadores();
+
 int main(void)
 {
     int z;
@@ -598,46 +600,6 @@ void Juego()
                             escenario->setMatrix(new Item(0, i, j), i, j);
                         }
                     }
-                    /* if (escenario->getMatrix()[i][j]->toString() == ":")
-                    {
-                        if (i + 1 <= 10)
-                        {
-                            if (escenario->getMatrix()[i + 1][j]->toString() == " ")
-                            {
-                                Item *temp = escenario->getMatrix()[i][j];
-                                escenario->setMatrix(temp, i + 1, j);
-                                escenario->setMatrix(new Item(0, i, j), i, j);
-                            }
-                        }
-                        else if (i - 1 >= 0)
-                        {
-                            if (escenario->getMatrix()[i - 1][j]->toString() == " ")
-                            {
-                                Item *temp = escenario->getMatrix()[i][j];
-                                escenario->setMatrix(temp, i - 1, j);
-                                escenario->setMatrix(new Item(0, i, j), i, j);
-                            }
-                        }
-                        else if (j + 1 <= 12)
-                        {
-                            if (escenario->getMatrix()[i][j + 1]->toString() == " ")
-                            {
-                                Item *temp = escenario->getMatrix()[i][j];
-                                escenario->setMatrix(temp, i, j + 1);
-                                escenario->setMatrix(new Item(0, i, j), i, j);
-                            }
-                        }
-                        else if (j - 1 >= 0)
-                        {
-                            if (escenario->getMatrix()[i][j - 1]->toString() == " ")
-                            {
-                                Item *temp = escenario->getMatrix()[i][j];
-                                escenario->setMatrix(temp, i, j - 1);
-                                escenario->setMatrix(new Item(0, i, j), i, j);
-                            }
-                        }
-                    }*/
-
                     if (escenario->getMatrix()[i][j]->toString() == "8")
                     {
                         cont = cont + 1;
@@ -751,6 +713,7 @@ void Juego()
             {
                 crearBomba();
             }
+            moverJugadores();
         }
     }
     attroff(COLOR_PAIR(2));
@@ -935,6 +898,68 @@ void crearBomba()
                         }
                         break;
                     }
+                }
+            }
+        }
+    }
+}
+
+void moverJugadores()
+{
+    int num = 1 + (rand() % 4);
+    for (int cx = 0; cx < 11; cx++)
+    {
+        for (int cy = 0; cy < 13; cy++)
+        {
+            if (escenario->getMatrix()[cx][cy]->toString() == ":")
+            {
+                if (num == 1 && cx - 1 >= 0)
+                {
+                    if (escenario->getMatrix()[cx - 1][cy]->toString() == " ")
+                    {
+                        Item *temp = escenario->getMatrix()[cx][cy];
+                        Item *temp2 = escenario->getMatrix()[cx - 1][cy];
+                        escenario->setMatrix(temp2, cx, cy);
+                        escenario->setMatrix(temp, cx - 1, cy);
+                        cy = 100;
+                    }
+                    //break;
+                }
+                if (num == 2 && cy + 1 <= 12)
+                {
+                    if (escenario->getMatrix()[cx][cy + 1]->toString() == " ")
+                    {
+                        Item *temp = escenario->getMatrix()[cx][cy];
+                        Item *temp2 = escenario->getMatrix()[cx][cy + 1];
+                        escenario->setMatrix(temp2, cx, cy);
+                        escenario->setMatrix(temp, cx, cy + 1);
+                        cy = 100;
+                    }
+                    //break;
+                }
+                if (num == 3 && cy - 1 >= 0)
+                {
+                    if (escenario->getMatrix()[cx][cy - 1]->toString() == " ")
+                    {
+                        Item *temp = escenario->getMatrix()[cx][cy];
+                        Item *temp2 = escenario->getMatrix()[cx][cy - 1];
+                        escenario->setMatrix(temp2, cx, cy);
+                        escenario->setMatrix(temp, cx, cy - 1);
+                        cy = 100;
+                    }
+                    //break;
+                }
+                if (num == 4 && cx + 1 <= 10)
+                {
+                    if (escenario->getMatrix()[cx + 1][cy]->toString() == " ")
+                    {
+                        Item *temp = escenario->getMatrix()[cx][cy];
+                        Item *temp2 = escenario->getMatrix()[cx + 1][cy];
+                        escenario->setMatrix(temp2, cx, cy);
+                        escenario->setMatrix(temp, cx + 1, cy);
+                        cy = 100;
+                    }
+                    //break;
                 }
             }
         }
