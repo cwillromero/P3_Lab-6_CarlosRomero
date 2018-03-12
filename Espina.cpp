@@ -40,6 +40,6 @@ Espina::~Espina()
 
 string Espina::toString()
 {
-    simbolo="x";
+    simbolo="0";
     return simbolo;
 }
