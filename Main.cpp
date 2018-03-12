@@ -380,7 +380,7 @@ void Juego()
         noecho();
         int cont = 0;
         int cont2 = 0;
-        bombasEnemigas();
+        //bombasEnemigas();
         if ((cx >= 0 && cy >= 0) && (cx <= 10 && cy <= 12))
         {
             for (int i = 0; i < 11; i++)
@@ -731,7 +731,7 @@ void Juego()
         printw("Ganóóó!!");
     }
     refresh();
-    usleep(1000000);
+    usleep(2000000);
     curs_set(1);
     salir();
 }
@@ -910,13 +910,14 @@ void crearBomba()
 
 void moverJugadores()
 {
-    int num = 1 + (rand() % 4);
+
     for (int cx = 0; cx < 11; cx++)
     {
         for (int cy = 0; cy < 13; cy++)
         {
             if (escenario->getMatrix()[cx][cy]->toString() == ":")
             {
+                int num = 1 + (rand() % 4);
                 if (num == 1 && cx - 1 >= 0)
                 {
                     if (escenario->getMatrix()[cx - 1][cy]->toString() == " ")
