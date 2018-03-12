@@ -5,9 +5,8 @@
 
 using namespace std;
 
-Normal::Normal(int tipo, int x, int y, int contador, int alcance): Bombas(tipo, x, y, contador)
+Normal::Normal(int tipo, int x, int y, int contador): Bombas(tipo, x, y, contador)
 {
-    this->alcance = alcance;
 }
 Normal::Normal()
 {
@@ -15,7 +14,7 @@ Normal::Normal()
 
 int Normal::getAlcance()
 {
-    alcance == 1 + rand() % (4);
+    alcance = 1 + (rand() % 4);
     return alcance;
 }
 
@@ -30,6 +29,6 @@ Normal::~Normal()
 
 string Normal::toString()
 {
-    simbolo = "*";
+    simbolo = "Q";
     return simbolo;
 }

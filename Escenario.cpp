@@ -22,10 +22,11 @@ Escenario::Escenario(string nombre)
     {
         for (int j = 0; j < 13; j++)
         {
-            Matriz[i][j] = new Item(2, i, j);
+            Matriz[i][j] = new Item(0, i, j);
         }
     }
 
+    //Crear los obstaculos
     for (int i = 0; i < 11; i++)
     {
         for (int j = 0; j < 13; j++)

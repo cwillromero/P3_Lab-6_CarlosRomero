@@ -29,5 +29,5 @@ Bombas::~Bombas()
 
 string Bombas::toString()
 {
-    return "+";
+    return "X";
 }

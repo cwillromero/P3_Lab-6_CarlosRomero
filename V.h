@@ -5,14 +5,14 @@ using namespace std;
 
 #ifndef V_H
 #define V_H
-class V:public Bombas{
+
+class V: public Bombas{
     private:
         string simbolo="V";
     public:
         V();
-        V(string);
+        V(int, int, int, int);
         string getSimbolo();
-        void setSimbolo(string);
 	string toString();
     ~V();
 };

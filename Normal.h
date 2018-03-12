@@ -16,7 +16,7 @@ class Normal: public Bombas{
 	string simbolo;
     public:
         Normal();
-        Normal(int, int, int, int, int);
+        Normal(int, int, int, int);
         int getAlcance();
         void setAlcance(int);
 	string toString();

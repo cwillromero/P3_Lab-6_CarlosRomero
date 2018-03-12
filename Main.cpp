@@ -20,12 +20,14 @@ int menu();
 void registro();
 int tipoBomba();
 void Cargando();
+int e;
 Jugador *jugador;
 void EscenarioInvisible();
 void EscenarioDeJuego();
 int tipobomba;
 void Juego();
-
+void crearBomba();
+int vida = 4;
 int main(void)
 {
     int z;
@@ -44,6 +46,7 @@ int main(void)
             refresh();
             usleep(1000000);
             registro();
+            e = 1;
             tipobomba = tipoBomba();
             EscenarioInvisible();
             Cargando();
@@ -61,6 +64,7 @@ int main(void)
             refresh();
             usleep(1000000);
             registro();
+            e = 2;
             tipobomba = tipoBomba();
             Cargando();
             erase();
@@ -325,32 +329,7 @@ void Cargando()
 
 void EscenarioInvisible()
 {
-
     string nombre = "Invisible";
-    int ram;
-    Bombas *bomba;
-    ram = (1 + rand() % 4);
-    //if (tipobomba == 1)
-    //{
-    //    bomba = new Normal(ram);
-    //}
-    erase();
-    echo();
-    if (tipobomba == 2)
-    {
-        move(0, 0);
-        printw("Ingrese el número de bombas a equipar:");
-        move(1, 0);
-        refresh();
-        char numb[10];
-        scanw("%s", numb);
-        int num_b = atoi(numb);
-        bomba = new Espina(num_b);
-    }
-    if (tipobomba == 3)
-    {
-        bomba = new V();
-    }
     escenario = new Invisible(nombre, tipobomba);
 }
 
@@ -361,11 +340,13 @@ void Juego()
     Jugador *botplayer2 = new Jugador(2, "Wilfredo", 1, 2, 0, 12);
     Jugador *botplayer3 = new Jugador(2, "Will", 1, 2, 10, 12);
     Jugador *botplayer4 = new Jugador(2, "Fredo", 1, 2, 5, 6);
+    //Crear Jugador
     escenario->getMatrix()[0][0] = jugador;
-    escenario->getMatrix()[botplayer1->getX()][botplayer1->getY()] = botplayer1;
-    escenario->getMatrix()[botplayer2->getX()][botplayer2->getY()] = botplayer2;
-    escenario->getMatrix()[botplayer3->getX()][botplayer3->getY()] = botplayer3;
-    escenario->getMatrix()[botplayer4->getX()][botplayer4->getY()] = botplayer4;
+    //Meterlos en la Matriz
+    escenario->setMatrix(botplayer1, 10, 0);
+    escenario->setMatrix(botplayer2, 0, 12);
+    escenario->setMatrix(botplayer3, 10, 12);
+    escenario->setMatrix(botplayer4, 5, 6);
     int x, y;
     int cx = 0;
     int cy = 0;
@@ -379,7 +360,14 @@ void Juego()
     curs_set(0);
     while (true)
     {
+        move(21, 8);
+        printw("%i", vida);
+        if (vida == 0)
+        {
+            break;
+        }
         noecho();
+        int cont = 0;
         if ((cx >= 0 && cy >= 0) && (cx <= 10 && cy <= 12))
         {
             for (int i = 0; i < 11; i++)
@@ -387,11 +375,58 @@ void Juego()
                 for (int j = 0; j < 13; j++)
                 {
                     char it = escenario->getMatrix()[i][j]->toString().at(0);
+                    if (escenario->getMatrix()[i][j]->toString() == "Q")
+                    {
+                        Normal *bomba;
+                        bomba = dynamic_cast<Normal *>(escenario->getMatrix()[i][j]);
+                        bomba->setContador(bomba->getContador() - 1);
+                        escenario->getMatrix()[i][j]->toString();
+                        int alcance = bomba->getAlcance();
+                        refresh();
+                        if (bomba->getContador() == 0)
+                        {
+                            if (i - alcance >= 0)
+                                for (int k = 1; k <= alcance; k++)
+                                {
+                                    if (escenario->getMatrix()[i - k][j]->toString() != "O")
+                                        escenario->setMatrix(new Item(0, i - k, j), i - k, j);
+                                }
+                            if (i + alcance <= 10)
+                                for (int k = 1; k <= alcance; k++)
+                                {
+                                    if (escenario->getMatrix()[i + k][j]->toString() != "O")
+                                        escenario->setMatrix(new Item(0, i + k, j), i + k, j);
+                                }
+
+                            if (j - alcance >= 0)
+                                for (int k = 1; k <= alcance; k++)
+                                {
+                                    if (escenario->getMatrix()[i][j - k]->toString() != "O")
+                                        escenario->setMatrix(new Item(0, i, j - k), i, j - k);
+                                }
+
+                            if (j + alcance <= 12)
+                                for (int k = 1; k <= alcance; k++)
+                                {
+                                    if (escenario->getMatrix()[i][j + k]->toString() != "O")
+                                        escenario->setMatrix(new Item(0, i, j + k), i, j + k);
+                                }
+                            escenario->setMatrix(new Item(0, i, j), i, j);
+                        }
+                    }
                     move(i + 1, j + 1);
                     printw("%c", it);
+                    if (escenario->getMatrix()[i][j]->toString() == "8")
+                    {
+                        cont = cont + 1;
+                    }
                 }
             }
-
+            if (cont == 0)
+            {
+                vida = vida - 1;
+                escenario->getMatrix()[cx][cy] = jugador;
+            }
             refresh();
             tecla = getch();
             //ARRIBA
@@ -413,6 +448,11 @@ void Juego()
             if (tecla == 115)
             {
                 direccion = 4;
+            }
+            //Crear Bomba
+            if (tecla == 109)
+            {
+                direccion = 5;
             }
             echo();
             if (direccion == 1)
@@ -471,14 +511,17 @@ void Juego()
                     }
                 }
             }
-            direccion=0;
+            if (direccion == 5)
+            {
+                crearBomba();
+            }
         }
     }
     attroff(COLOR_PAIR(2));
     move(y / 2, (x / 2 - 4));
-    //printw("Perdió!!");
+    printw("Perdió!!");
     refresh();
-    //usleep(1000000 / 2);
+    usleep(1000000 / 2);
     curs_set(1);
 }
 
@@ -545,19 +588,109 @@ void EscenarioDeJuego()
         printw("Tren");
     move(20, 11);
     printw("w,a,s,d,x");
+    move(21, 0);
+    printw("Vidas: ");
     if (escenario->getNombre() == "Invisible")
     {
-        init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
-        attron(COLOR_PAIR(5));
-        move(21, 0);
-        printw("Vidas: ");
         move(21, 8);
-        attroff(COLOR_PAIR(5));
-        Invisible *ev = NULL;
-        ev = dynamic_cast<Invisible *>(escenario);
-        printw("%i", ev->getAleatorio());
+        Invisible *ev = dynamic_cast<Invisible *>(escenario);
+        vida = ev->getAleatorio();
+        printw("%i", vida);
     }
     else
     {
+        vida=0;
+        move(21, 8);
+        printw("%i", vida);
+    }
+}
+
+void crearBomba()
+{
+
+    for (int i = 0; i < 11; i++)
+    {
+        for (int j = 0; j < 13; j++)
+        {
+            if (escenario->getMatrix()[i][j]->toString() == "8")
+            {
+                if (j + 1 <= 12)
+                {
+                    if (escenario->getMatrix()[i][j + 1]->toString() == " ")
+                    {
+                        if (tipobomba == 1)
+                        {
+                            escenario->setMatrix(new Normal(1, i, j + 1, 4), i, j + 1);
+                        }
+                        if (tipobomba == 2)
+                        {
+                            escenario->setMatrix(new Espina(1, i, j + 1, 4, 0), i, j + 1);
+                        }
+                        if (tipobomba == 3)
+                        {
+                            escenario->setMatrix(new V(1, i, j + 1, 4), i, j + 1);
+                        }
+                        break;
+                    }
+                }
+                if (i + 1 <= 10)
+                {
+                    if (escenario->getMatrix()[i + 1][j]->toString() == " ")
+                    {
+                        if (tipobomba == 1)
+                        {
+                            escenario->setMatrix(new Normal(1, i + 1, j, 4), i + 1, j);
+                        }
+                        if (tipobomba == 2)
+                        {
+                            escenario->setMatrix(new Espina(1, i + 1, j, 4, 0), i + 1, j);
+                        }
+                        if (tipobomba == 3)
+                        {
+                            escenario->setMatrix(new V(1, i + 1, j, 4), i + 1, j);
+                        }
+                        break;
+                    }
+                }
+                if (j - 1 >= 0)
+                {
+                    if (escenario->getMatrix()[i][j - 1]->toString() == " ")
+                    {
+                        if (tipobomba == 1)
+                        {
+                            escenario->setMatrix(new Normal(1, i, j - 1, 4), i, j - 1);
+                        }
+                        if (tipobomba == 2)
+                        {
+                            escenario->setMatrix(new Espina(1, i, j - 1, 4, 0), i, j - 1);
+                        }
+                        if (tipobomba == 3)
+                        {
+                            escenario->setMatrix(new V(1, i, j - 1, 4), i, j - 1);
+                        }
+                        break;
+                    }
+                }
+                if (i - 1 >= 0)
+                {
+                    if (escenario->getMatrix()[i - 1][j]->toString() == " ")
+                    {
+                        if (tipobomba == 1)
+                        {
+                            escenario->setMatrix(new Normal(1, i - 1, j, 4), i - 1, j);
+                        }
+                        if (tipobomba == 2)
+                        {
+                            escenario->setMatrix(new Espina(1, i - 1, j, 4, 0), i - 1, j);
+                        }
+                        if (tipobomba == 3)
+                        {
+                            escenario->setMatrix(new V(1, i - 1, j, 4), i - 1, j);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

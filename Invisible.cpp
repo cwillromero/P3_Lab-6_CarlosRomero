@@ -12,7 +12,7 @@ Invisible::Invisible(string nombre, int tipobomba) : Escenario(nombre)
 }
 
 int Invisible::getAleatorio(){
-      aleatorio=1+rand()%(3);
+      aleatorio=1 + (rand() % 3);
       return aleatorio;
 }
 

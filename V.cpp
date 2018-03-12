@@ -4,24 +4,25 @@
 
 using namespace std;
 
-V::V(string simbolo){
-    this->simbolo=simbolo;
+V::V(int tipo, int x, int y, int contador) : Bombas(tipo, x, y, contador)
+{
 }
 
-V::V(){
+V::V()
+{
 }
 
-string V::getSimbolo(){
+string V::getSimbolo()
+{
     return simbolo;
 }
 
-void V:: setSimbolo(string simbolo){
-    this->simbolo=simbolo;
+V::~V()
+{
 }
 
-V::~V(){
-}
-
-string V:: toString(){
-	return simbolo;
+string V::toString()
+{
+    simbolo="0";
+    return simbolo;
 }
