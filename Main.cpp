@@ -32,6 +32,7 @@ void crearBomba();
 int vida = 4;
 void moverJugadores();
 void bombasEnemigas();
+void TrenT();
 
 int main(void)
 {
@@ -87,6 +88,7 @@ int main(void)
     }
 }
 
+//El menú
 int menu()
 {
     initscr();
@@ -393,6 +395,10 @@ void Juego()
         int cont = 0;
         int cont2 = 0;
         bombasEnemigas();
+        if (e == 2)
+        {
+            TrenT();
+        }
         if ((cx >= 0 && cy >= 0) && (cx <= 10 && cy <= 12))
         {
             for (int i = 0; i < 11; i++)
@@ -855,7 +861,7 @@ void EscenarioDeJuego()
     }
     else
     {
-        vida = 0;
+        vida = 4;
         move(21, 8);
         printw("%i", vida);
     }
@@ -1037,4 +1043,35 @@ void bombasEnemigas()
         }
     }
     refresh();
+}
+
+//Verificar si alguien llegó al tren
+void TrenT()
+{
+    int cont = 0;
+    for (int i = 0; i < 11; i++)
+    {
+        for (int j = 0; j < 13; j++)
+        {
+            if (escenario->getMatrix()[i][j]->toString() == "8")
+            {
+                for (int k = 0; k < 15; k++)
+                {
+                    int x = ((dynamic_cast<Tren *>(escenario))->getX((dynamic_cast<Tren *>(escenario))->getListaxy()[k].at(0)));
+                    int y = ((dynamic_cast<Tren *>(escenario))->getY((dynamic_cast<Tren *>(escenario))->getListaxy()[k].at(2)));
+                    if (i == x && j == y)
+                    {
+                        k = 14;
+                        cont++;
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    if (cont != 0)
+    {
+        int c;
+    }
 }

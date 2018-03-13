@@ -14,11 +14,10 @@ class Tren : public Escenario
     vector<string>listaxy;
   public:
    Tren(string);
-   Tren(string, int);
-   int getY(string);
-   int getX(string);
+   int getY(char);
+   int getX(char);
    int parseInt(char);
-   Item ***TrenRun(Item ***);
+   //Item ***TrenRun(Item ***);
    vector<string> getListaxy();
    vector<int> getInicioTren();
    ~Tren();

@@ -9,6 +9,7 @@ Tren::Tren(string nombre) : Escenario(nombre)
     trenxy.push_back(2);
     trenxy.push_back(4);
     //POSICIONES DEL TREN
+    listaxy.push_back("2-4");
     listaxy.push_back("2-5");
     listaxy.push_back("2-6");
     listaxy.push_back("2-7");
@@ -18,10 +19,11 @@ Tren::Tren(string nombre) : Escenario(nombre)
     listaxy.push_back("5-8");
     listaxy.push_back("6-8");
     listaxy.push_back("7-8");
-    listaxy.push_back("7-7");
-    listaxy.push_back("7-6");
-    listaxy.push_back("7-5");
-    listaxy.push_back("7-4");
+    listaxy.push_back("8-8");
+    listaxy.push_back("8-7");
+    listaxy.push_back("8-6");
+    listaxy.push_back("8-5");
+    listaxy.push_back("8-4");
 }
 
 int Tren::parseInt(char caracter)
@@ -67,27 +69,17 @@ int Tren::parseInt(char caracter)
     return num;
 }
 
-Item ***Tren::TrenRun(Item ***Matriz)
-{
-    int x, y;
-    for (int i = 0; i < listaxy.size(); i++)
-    {
-        x = getX(listaxy[i]);
-        y = getY(listaxy[i]);
-    }
-}
-
-int Tren::getY(string palabra)
+int Tren::getY(char Y)
 {
     int y = 0;
-    y = parseInt(palabra[2]);
+    y = parseInt(Y);
     return y;
 }
 
-int Tren::getX(string palabra)
+int Tren::getX(char X)
 {
     int x;
-    x = parseInt(palabra[0]);
+    x = parseInt(X);
     return x;
 }
 
