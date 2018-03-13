@@ -63,7 +63,7 @@ int main(void)
         }
         case 2:
         {
-            curs_set(0);
+            //curs_set(0);
             move(5, 21);
             printw("Tren");
             refresh();
@@ -71,11 +71,12 @@ int main(void)
             registro();
             e = 2;
             tipobomba = tipoBomba();
+            EscenarioTren();
             Cargando();
             erase();
             EscenarioDeJuego();
             Juego();
-            curs_set(1);
+            //curs_set(1);
             break;
         }
         case 3:
