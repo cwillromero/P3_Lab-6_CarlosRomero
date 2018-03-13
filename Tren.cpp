@@ -83,11 +83,6 @@ int Tren::getX(char X)
     return x;
 }
 
-vector<int> Tren::getInicioTren()
-{
-    return trenxy;
-}
-
 vector<string> Tren::getListaxy()
 {
     return listaxy;

@@ -780,9 +780,9 @@ void Juego()
     }
     else
     {
-        init_pair(11, COLOR_RED, COLOR_BLACK);
+        init_pair(11, COLOR_GREEN, COLOR_BLACK);
         attron(COLOR_PAIR(11));
-        printw("Perdió!!");
+        printw("Ganóó!!");
         attroff(COLOR_PAIR(11));
     }
     refresh();
@@ -861,7 +861,7 @@ void EscenarioDeJuego()
     }
     else
     {
-        vida = 4;
+        vida = 3;
         move(21, 8);
         printw("%i", vida);
     }
@@ -1053,7 +1053,7 @@ void TrenT()
     {
         for (int j = 0; j < 13; j++)
         {
-            if (escenario->getMatrix()[i][j]->toString() == "8")
+            if (escenario->getMatrix()[i][j]->toString() == "8" || escenario->getMatrix()[i][j]->toString() == ":")
             {
                 for (int k = 0; k < 15; k++)
                 {

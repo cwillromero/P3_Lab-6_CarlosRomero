@@ -17,9 +17,7 @@ class Tren : public Escenario
    int getY(char);
    int getX(char);
    int parseInt(char);
-   //Item ***TrenRun(Item ***);
    vector<string> getListaxy();
-   vector<int> getInicioTren();
    ~Tren();
 };
 #endif
