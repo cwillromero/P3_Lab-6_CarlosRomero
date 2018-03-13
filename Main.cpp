@@ -24,6 +24,7 @@ void Cargando();
 int e;
 Jugador *jugador;
 void EscenarioInvisible();
+void EscenarioTren();
 void EscenarioDeJuego();
 int tipobomba;
 void Juego();
@@ -228,6 +229,7 @@ void registro()
     jugador = new Jugador(2, name, estado, tipo, 0, 0);
 }
 
+//retorna el tipo de bomba
 int tipoBomba()
 {
     erase();
@@ -341,6 +343,13 @@ void EscenarioInvisible()
     escenario = new Invisible(nombre, tipobomba);
 }
 
+//Crea Escenario Tren
+void EscenarioTren()
+{
+    string nombre = "Tren";
+    escenario = new Tren(nombre);
+}
+
 //Modalidad General, movimientos, validaciones, bombas, etc
 void Juego()
 {
@@ -363,8 +372,10 @@ void Juego()
     move(y / 2, x / 2 - 18);
     int tecla;
     int direccion;
-    init_pair(2, COLOR_GREEN, COLOR_BLACK);
-    attron(COLOR_PAIR(2));
+    init_pair(100, COLOR_RED, COLOR_BLACK);
+    init_pair(101, COLOR_BLUE, COLOR_BLACK);
+    init_pair(102, COLOR_GREEN, COLOR_BLACK);
+
     refresh();
     curs_set(0);
     bool ganar = false;
@@ -387,12 +398,14 @@ void Juego()
             {
                 for (int j = 0; j < 13; j++)
                 {
-                    char it = escenario->getMatrix()[i][j]->toString().at(0);
-                    move(i + 1, j + 1);
-                    printw("%c", it);
-                    refresh();
                     if (escenario->getMatrix()[i][j]->toString() == "Q")
                     {
+                        attron(COLOR_PAIR(100));
+                        char it = escenario->getMatrix()[i][j]->toString().at(0);
+                        move(i + 1, j + 1);
+                        printw("%c", it);
+                        refresh();
+                        attroff(COLOR_PAIR(100));
                         Normal *bomba;
                         bomba = dynamic_cast<Normal *>(escenario->getMatrix()[i][j]);
                         bomba->setContador(bomba->getContador() - 1);
@@ -466,8 +479,14 @@ void Juego()
                         }
                     }
 
-                    if (escenario->getMatrix()[i][j]->toString() == "0")
+                    else if (escenario->getMatrix()[i][j]->toString() == "0")
                     {
+                        attron(COLOR_PAIR(100));
+                        char it = escenario->getMatrix()[i][j]->toString().at(0);
+                        move(i + 1, j + 1);
+                        printw("%c", it);
+                        refresh();
+                        attroff(COLOR_PAIR(100));
                         Espina *bomba;
                         bomba = dynamic_cast<Espina *>(escenario->getMatrix()[i][j]);
                         bomba->setContador(bomba->getContador() - 1);
@@ -540,8 +559,14 @@ void Juego()
                         }
                     }
 
-                    if (escenario->getMatrix()[i][j]->toString() == "x")
+                    else if (escenario->getMatrix()[i][j]->toString() == "x")
                     {
+                        attron(COLOR_PAIR(100));
+                        char it = escenario->getMatrix()[i][j]->toString().at(0);
+                        move(i + 1, j + 1);
+                        printw("%c", it);
+                        refresh();
+                        attroff(COLOR_PAIR(100));
                         V *bomba;
                         bomba = dynamic_cast<V *>(escenario->getMatrix()[i][j]);
                         bomba->setContador(bomba->getContador() - 1);
@@ -604,14 +629,32 @@ void Juego()
                             escenario->setMatrix(new Item(0, i, j), i, j);
                         }
                     }
-                    if (escenario->getMatrix()[i][j]->toString() == "8")
+                    else if (escenario->getMatrix()[i][j]->toString() == "8")
                     {
+                        attron(COLOR_PAIR(101));
+                        char it = escenario->getMatrix()[i][j]->toString().at(0);
+                        move(i + 1, j + 1);
+                        printw("%c", it);
+                        refresh();
+                        attroff(COLOR_PAIR(101));
                         cont = cont + 1;
                     }
-
-                    if (escenario->getMatrix()[i][j]->toString() == ":")
+                    else if (escenario->getMatrix()[i][j]->toString() == ":")
                     {
+                        attron(COLOR_PAIR(102));
+                        char it = escenario->getMatrix()[i][j]->toString().at(0);
+                        move(i + 1, j + 1);
+                        printw("%c", it);
+                        refresh();
+                        attroff(COLOR_PAIR(102));
                         cont2 = cont2 + 1;
+                    }
+                    else
+                    {
+                        char it = escenario->getMatrix()[i][j]->toString().at(0);
+                        move(i + 1, j + 1);
+                        printw("%c", it);
+                        refresh();
                     }
                 }
             }
@@ -720,15 +763,20 @@ void Juego()
             moverJugadores();
         }
     }
-    attroff(COLOR_PAIR(2));
     move(y / 2, (x / 2 - 4));
     if (ganar == false)
     {
+        init_pair(11, COLOR_RED, COLOR_BLACK);
+        attron(COLOR_PAIR(11));
         printw("Perdió!!");
+        attroff(COLOR_PAIR(11));
     }
     else
     {
-        printw("Ganóóó!!");
+        init_pair(11, COLOR_RED, COLOR_BLACK);
+        attron(COLOR_PAIR(11));
+        printw("Perdió!!");
+        attroff(COLOR_PAIR(11));
     }
     refresh();
     usleep(2000000);
@@ -748,7 +796,7 @@ void EscenarioDeJuego()
     printw("Carlos Romero");
     attroff(COLOR_PAIR(1));
     refresh();
-    init_pair(22, COLOR_RED, COLOR_WHITE);
+    init_pair(22, COLOR_RED, COLOR_MAGENTA);
     attron(COLOR_PAIR(22));
     for (int i = 0; i < 15; i++)
     {
@@ -779,13 +827,8 @@ void EscenarioDeJuego()
     attroff(COLOR_PAIR(3));
     refresh();
     string nombre = jugador->getNombre();
-    char name[nombre.size()];
-    for (int i = 0; i < nombre.size(); i++)
-    {
-        name[i] = nombre.at(i);
-    }
     move(17, 20);
-    printw("%s", name);
+    printw("%s", nombre.c_str());
     move(18, 19);
     if (tipobomba == 1)
         printw("Normales");
@@ -908,9 +951,9 @@ void crearBomba()
     }
 }
 
+//Mueve los bots aleatoriamente
 void moverJugadores()
 {
-
     for (int cx = 0; cx < 11; cx++)
     {
         for (int cy = 0; cy < 13; cy++)
@@ -971,6 +1014,7 @@ void moverJugadores()
     }
 }
 
+//Crea las bombas enemigas
 void bombasEnemigas()
 {
     int i = (rand() % 10);
