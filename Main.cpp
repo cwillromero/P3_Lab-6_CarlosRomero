@@ -1072,6 +1072,34 @@ void TrenT()
 
     if (cont != 0)
     {
-        int c;
+        for (int k = 0; k < 15; k++)
+        {
+            int x = ((dynamic_cast<Tren *>(escenario))->getX((dynamic_cast<Tren *>(escenario))->getListaxy()[k].at(0)));
+            int y = ((dynamic_cast<Tren *>(escenario))->getY((dynamic_cast<Tren *>(escenario))->getListaxy()[k].at(2)));
+            char train = '+';
+            move(x + 1, y + 1);
+            printw("%c", train);
+            refresh();
+            usleep(1000000 / 4);
+            if (escenario->getMatrix()[x][y]->toString() == "Q" || escenario->getMatrix()[x][y]->toString() == "0" || escenario->getMatrix()[x][y]->toString() == "x")
+            {
+                if (tipobomba == 1)
+                {
+                    dynamic_cast<Normal *>(escenario->getMatrix()[x][y])->setContador(0);
+                }
+                if (tipobomba == 2)
+                {
+                    dynamic_cast<Espina *>(escenario->getMatrix()[x][y])->setContador(0);
+                }
+                if (tipobomba == 3)
+                {
+                    dynamic_cast<V *>(escenario->getMatrix()[x][y])->setContador(0);
+                }
+            }
+            if (escenario->getMatrix()[x][y]->toString() == "8" || escenario->getMatrix()[x][y]->toString() == "0" || escenario->getMatrix()[x][y]->toString() == ":")
+            {
+                escenario->setMatrix(new Item(0, x, y), x, y);
+            }
+        }
     }
 }
